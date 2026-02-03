@@ -1,0 +1,85 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2406                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _630d60de3b-20240620 OPENFOAM=2406 version=v2406
+Arch   : "LSB;label=32;scalar=64"
+Exec   : blockMesh
+Date   : Feb 02 2026
+Time   : 20:42:47
+Host   : node707.hydra.os
+PID    : 2936777
+I/O    : uncollated
+Case   : /rhea/scratch/brussel/112/vsc11226/MArun_scratch/dyMTurbine_v02_2/dyMTurbine_moving
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Overriding DebugSwitches according to controlDict
+    overset         1;
+
+    dynamicOversetFvMesh 1;
+
+    cellVolumeWeight 0;
+
+Creating block mesh from "system/blockMeshDict"
+Creating block edges
+No non-planar block faces defined
+Creating topology blocks
+
+Creating topology patches - from boundary section
+
+Creating block mesh topology
+
+Check topology
+
+	Basic statistics
+		Number of internal faces : 0
+		Number of boundary faces : 6
+		Number of defined boundary faces : 6
+		Number of undefined boundary faces : 0
+	Checking patch -> block consistency
+
+Creating block offsets
+Creating merge list (topological search)...
+
+Creating polyMesh from blockMesh
+Creating patches
+Creating cells
+Creating points with scale (1 1 1)
+    Block 0 cell size :
+        i : 5 .. 5
+        j : 5 .. 5
+        k : 5 .. 5
+
+Adding cell zones
+    0	movingZone
+No patch pairs to merge
+
+Writing polyMesh with 1 cellZones
+----------------
+Mesh Information
+----------------
+  boundingBox: (-60 -110 10) (60 110 95)
+  nPoints: 20250
+  nCells: 17952
+  nFaces: 56068
+  nInternalFaces: 51644
+----------------
+Cell Zones
+----------------
+  zone 0 (size: 17952) name: movingZone
+----------------
+Patches
+----------------
+  patch 0 (start: 51644 size: 4424) name: oversetPatch
+
+End
+
