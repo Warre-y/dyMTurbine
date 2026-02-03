@@ -1,0 +1,69 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// THE ACTUATOR DISK PHYSICS
+disk1
+{
+    type            actuationDiskSource;
+    //variant         Froude;     // variableScaling;
+    variant         variableScaling;
+    selectionMode   cellZone;
+    cellZone        actuationDisk;
+    diskArea        2827.43;
+    diskDir         constant (1 0 0);  // Or other Function1
+    writeToFile     true;
+    sink            true;
+    //Cp              0.489;
+    //Ct              0.799;
+    
+    // --- CSV FILE ---
+    Cp csvFile;
+    CpCoeffs
+    {
+        nHeaderLine         1;
+        refColumn           0;      //x-axis U
+        componentColumns    (1);    //y-axis Cp
+        separator           ",";
+        mergeSeparators     no;
+        file                "turbineData.csv";
+    }
+    Ct csvFile;
+    CtCoeffs
+    {
+        nHeaderLine         1;
+        refColumn           0;      //x-axis U
+        componentColumns    (2);    //y-axis Cp
+        separator           ","; 
+        mergeSeparators     no;
+        file                "turbineData.csv";
+    }
+
+
+    // MONITOR OPTIONS
+
+    monitorMethod   points;
+    monitorCoeffs
+    {
+        points
+        (
+            (-30 0 50)
+            ( 30 0 50)
+        );
+    }
+}
+
+
+// ************************************************************************* //

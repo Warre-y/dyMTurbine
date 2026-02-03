@@ -1,0 +1,142 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    {
+    
+    //--------------------------
+    //--------movingZone--------
+    //--------------------------
+        name    movingZoneCellSet;
+        type    cellSet;
+        action  new;
+//        source boxToCell;
+//        box (-55 -105 15) (55 105 90);  
+        source zoneToCell;
+        sourceInfo
+        {
+           zone          movingZone;
+        }
+    }
+    
+    //--------------------------
+    //-----actuationDisk--------
+    //--------------------------
+    
+    {
+        name    turbineCellSet;
+        type    cellSet;
+        action  new;     
+        source  cylinderToCell;
+        sourceInfo
+        {
+            p1      (-10 0 50);
+            p2      ( 10 0 50);
+            radius  25;
+        }
+    }
+    
+    {   // changes the name to actuationDisk 
+        name    actuationDiskCellSet;
+        type    cellSet;
+        action  new;
+        source  cellToCell;
+        set     turbineCellSet;
+    }
+   
+    {   // keep disk ONLY inside moving zone
+        name    actuationDiskCellSet;
+        type    cellSet;
+        action  subset;
+        source  cellToCell;
+        set     movingZoneCellSet;
+    }
+    
+    {   // makes it a cellZone
+        name    actuationDisk;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     actuationDiskCellSet;
+    }
+    
+    //--------------------------
+    //--------background--------
+    //--------------------------
+
+    {
+        name    backgroundCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            box (-1e6 -1e6 -1e6) (1e6 1e6 1e6);
+        }
+    }
+
+    {
+        name    backgroundCellSet;
+        type    cellSet;
+        action  delete;
+        source  cellToCell;
+        sourceInfo 
+        {
+            set movingZoneCellSet;
+        }
+    }
+    
+    {
+        name    backgroundCellSet;
+        type    cellSet;
+        action  delete;
+        source  cellToCell;
+        sourceInfo 
+        {
+            set actuationDiskCellSet;
+        }
+    }
+
+    
+//    {       
+//        name    backgroundCellSet;
+//        type    cellSet;
+//        action  new;
+//        source  cellToCell;
+//        set     movingZoneCellSet;
+//    }
+//
+//    {
+//        name    backgroundCellSet;
+//        type    cellSet;
+//        action  invert;
+//    }
+    
+    {   // makes it a cellZone
+        name    backgroundZone;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        sourceInfo
+        {
+            set backgroundCellSet;
+        }
+    }
+
+);
+
+// ************************************************************************* //

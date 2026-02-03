@@ -1,0 +1,60 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      decomposeParDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+numberOfSubdomains 8;
+
+//method          multiRegion; // Use multiRegion for overset
+method          scotch;
+//preservePatches (overset)
+//preserveFaceZones   (oversetPatch)
+
+
+//regions
+//{
+//    // How to decompose the background
+//    region0
+//    {
+//        numberOfSubdomains 16;
+//        method          hierarchical;
+//        coeffs
+//        {
+//            n           (8 2 1); // Your original (3 1 1) split
+//        }
+//    }
+//
+//    // How to decompose the moving zone
+//    movingZone1 // <-- This MUST match your cellZone name
+//    {
+//        numberOfSubdomains 16;
+//        method          hierarchical;
+//        coeffs
+//        {
+//            n           (8 2 1); // Split this region the same way
+//        }
+//    }
+//}
+
+// numberOfSubdomains  8;
+
+// method          hierarchical;
+
+// coeffs
+// {
+//     n           (4 2 1);
+// }
+
+
+// ************************************************************************* //

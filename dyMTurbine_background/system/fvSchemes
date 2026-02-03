@@ -1,0 +1,101 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default         Euler;
+}
+
+gradSchemes
+{
+    default         Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+    //div(phi,U)      Gauss upwind;
+
+    div(phi,U)       Gauss linearUpwind grad(U);
+    div(phi,omega)   Gauss upwind; 
+    div(phi,epsilon) Gauss upwind;
+    div(phi,k)       Gauss upwind;
+    
+//    div(phi,U)       Gauss limitedLinear 1;  
+//    div(phi,omega)   Gauss limitedLinear 1;
+//    div(phi,epsilon) Gauss limitedLinear 1;
+//    div(phi,k)       Gauss limitedLinear 1;
+
+ 
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear corrected;
+    laplacian(diffusivity,cellDisplacement)  Gauss linear corrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         corrected;
+}
+
+oversetInterpolation
+{
+    method inverseDistance;
+//  	method leastSquares;
+//      method                  cellVolumeWeight;
+//    holeLayers 4;
+//    useLayer 3;
+//    consistent              yes;
+//    normalise               yes; 
+    searchBoxPadding        25.0;
+    searchBox               (-160 -200 -15) (260 200 160);
+    searchBoxDivs           (42 40 35);
+    zoneType
+    {
+        backgroundZone      background;
+        actuationDisk       calculated;
+        movingZone          overset;
+    }
+}
+
+fluxRequired
+{
+    default         no;
+    pcorr           ;
+    p               ;
+}
+
+
+oversetInterpolationSuppressed
+{
+    grad(p);
+    surfaceIntegrate(phiHbyA);
+}
+
+wallDist
+{
+    method meshWave;
+}
+
+// ************************************************************************* //
