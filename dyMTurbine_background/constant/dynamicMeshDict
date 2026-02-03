@@ -1,0 +1,89 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      dynamicMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dynamicFvMesh       dynamicOversetFvMesh;
+
+solver          multiSolidBodyMotionSolver;
+
+multiSolidBodyMotionSolverCoeffs
+{
+    movingZone
+    {
+        solidBodyMotionFunction   oscillatingRotatingMotion;
+        oscillatingRotatingMotionCoeffs
+        {
+            origin      (0 0 0);
+            amplitude   (0 4 0);
+            omega       5.0;
+        }
+    }
+}
+//zones
+//{
+//    movingZone
+//    {
+//        cellZone    movingZone;
+//        fringe      yes;
+//        
+//        holeCells
+//        {
+//            type    none;
+//        }
+//    }
+//    backgroundZone
+//    {
+//        cellZone    backgroundZone;
+//        fringe      yes;
+//        
+//        holeCells
+//        {
+////            type    inverseDistance;
+////            searchBox   (-70 -110 0) (70 110 100);    
+//            type    composite;
+//            
+//            holeCellsComposite
+//            {
+//                zoneIDMethod
+//                {
+//                    type    zoneID;
+//                    zones   (1);
+//                }
+//            }
+//        }
+//    }
+//}
+
+
+overset
+{
+    backgroundZone
+    {
+        cellZone        backgroundZone;
+        donorZones      (movingZone);
+//        zoneID      0;
+//        donorZones  (1);
+    }
+    
+    movingZone
+    {
+        cellZone        movingZone;
+        donorZones      (backgroundZone);
+//        zoneID          1;
+//        donorZones      (0);
+//        holeCutting     yes;
+    }
+}
+// ************************************************************************* //
